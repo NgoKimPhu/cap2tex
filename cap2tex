@@ -1,0 +1,44 @@
+#!/usr/local/bin/python3
+
+from time import time
+from os.path import getmtime
+from pynput import keyboard
+from pytesseract import pytesseract, image_to_string
+from subprocess import run
+from sys import argv
+
+pytesseract.tesseract_cmd = r'/usr/local/bin/tesseract'
+FILE = '/tmp/cap2tex.png'
+NOTI = '''
+on run argv
+  display notification (item 2 of argv) with title (item 1 of argv)
+end run
+'''
+
+def cap2tex(lang='eng+script/HanS', interactive=False):
+    start = time()
+    run(['screencapture', '-sxr', FILE])
+
+    mtime = 0
+    try: mtime = getmtime(FILE)
+    except: pass
+    if mtime < start: return
+
+    text = image_to_string(FILE, lang=lang).strip()
+    if interactive:
+        print(text)
+    else:
+        run('pbcopy', text=True, input=text)
+        run(['osascript', '-e', NOTI, 'cap2tex', text])
+
+if '-d' in argv:
+    with keyboard.GlobalHotKeys({
+            '<cmd>+<shift>+2': lambda: cap2tex('script/HanS'),
+            '<cmd>+<ctrl>+2':  cap2tex,
+            }) as h:
+        try:
+            print('[cap2tex] ready')
+            h.join()
+        except KeyboardInterrupt:
+            print('[cap2tex] done')
+else: cap2tex('script/HanS', interactive=True)
