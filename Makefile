@@ -10,10 +10,14 @@ ifeq ($(PREFIX),)
 	PREFIX := /usr/local
 endif
 
-.PHONY: deps install
-deps: ## Install dependencies (tesseract, language models, and python tools)
+/usr/local/bin/tesseract:
 	brew install tesseract
+
+/usr/local/share/tessdata/HanS.traineddata:
 	curl -L 'https://github.com/tesseract-ocr/tessdata_best/raw/main/script/HanS.traineddata' -o /usr/local/share/tessdata/HanS.traineddata
+
+.PHONY: deps install
+deps: /usr/local/bin/tesseract /usr/local/share/tessdata/HanS.traineddata ## Install dependencies (tesseract, language models, and python tools)
 	pip3 install -r requirements.txt
 
 install: deps ## Install dependencies and install main python script to PREFIX bin
