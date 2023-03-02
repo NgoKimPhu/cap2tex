@@ -13,8 +13,7 @@ endif
 .PHONY: deps install
 deps: ## Install dependencies (tesseract, language models, and python tools)
 	brew install tesseract
-	curl -L 'https://github.com/tesseract-ocr/tessdata_best/raw/main/script/HanS.traineddata' -o /usr/local/share/tessdata/script/HanS_best.traineddata
-	ln -sf HanS_best.traineddata /usr/local/share/tessdata/script/HanS.traineddata
+	curl -L 'https://github.com/tesseract-ocr/tessdata_best/raw/main/script/HanS.traineddata' -o /usr/local/share/tessdata/HanS.traineddata
 	pip3 install -r requirements.txt
 
 install: deps ## Install dependencies and install main python script to PREFIX bin

@@ -15,7 +15,7 @@ on run argv
 end run
 '''
 
-def cap2tex(lang='eng+script/HanS', interactive=False):
+def cap2tex(lang='eng+HanS', interactive=False):
     start = time()
     run(['screencapture', '-sxr', FILE])
 
@@ -33,7 +33,7 @@ def cap2tex(lang='eng+script/HanS', interactive=False):
 
 if '-d' in argv:
     with keyboard.GlobalHotKeys({
-            '<cmd>+<shift>+2': lambda: cap2tex('script/HanS'),
+            '<cmd>+<shift>+2': lambda: cap2tex('HanS'),
             '<cmd>+<ctrl>+2':  cap2tex,
             }) as h:
         try:
@@ -41,4 +41,4 @@ if '-d' in argv:
             h.join()
         except KeyboardInterrupt:
             print('[cap2tex] done')
-else: cap2tex('script/HanS', interactive=True)
+else: cap2tex('HanS', interactive=True)
